@@ -5,6 +5,7 @@ const apiUrl = "https://jsonplaceholder.typicode.com";
 
 const PostList = () => {
   const [posts, setPosts] = useState<any>([]);
+  const [errors, setErrors] = useState<any>(null);
 
   const getFunc = async () => {
     try {
@@ -14,7 +15,7 @@ const PostList = () => {
       const json = await response.json();
       setPosts(json);
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      setErrors("Error fetching posts")
     }
   };
 
@@ -24,7 +25,6 @@ const PostList = () => {
 
   const handleSubmit = async () => {
     try {
-      // Make a POST request to create a new post
       const response: any = await axios.post(
         "https://jsonplaceholder.typicode.com/posts",
         {
@@ -33,16 +33,10 @@ const PostList = () => {
           userId: 1, // You can set the userId as required by your API
         }
       );
-      console.log("response?.title?.length", response?.data?.title?.length);
-
       if (response?.data?.title?.length > 0) {
-        // getFunc();
         setPosts([...posts, response?.data]);
       }
-      // Handle the response as needed
-      console.log(response.data);
     } catch (error) {
-      // Handle errors
       console.error(error);
     }
   };
@@ -61,28 +55,14 @@ const PostList = () => {
       const filteredElement = posts?.filter(
         (item: any) => item?.id !== resp?.data?.id
       );
-      console.log("filteredElement", filteredElement);
-
       setPosts([updatedUser, ...filteredElement]);
     }
-    console.log("resp", resp);
-
-    // setUsers((prevUsers: any) =>
-    //   prevUsers.map((user: any) =>
-    //     user.id === userId ? { ...user, ...updatedUser } : user
-    //   )
-    // );
   };
 
   const handleDeleteUser = async (userId: any) => {
     const resp = await axios.delete(
       `https://jsonplaceholder.typicode.com/posts/${userId}`
     );
-    console.log("resp", resp);
-
-    // setUsers((prevUsers: any) =>
-    //   prevUsers.filter((user: any) => user.id !== userId)
-    // );
   };
 
   return (
@@ -99,6 +79,7 @@ const PostList = () => {
     // </div>
     <div>
       <h1>Postlist</h1>
+      {errors && <p>{errors}</p>}
       {posts?.map((post: any) => (
         <div key={post?.id}>
           <h3>Title : {post?.title}</h3>

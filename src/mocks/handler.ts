@@ -33,10 +33,17 @@ export const handlers = [
     }
   ),
 
-  rest.put('https://jsonplaceholder.typicode.com/posts/:id', (req, res, ctx) => {
+  rest.put(
+    "https://jsonplaceholder.typicode.com/posts/:id",
+    (req, res, ctx) => {
       const { id } = req.params;
-      const { title, body }:any = req.json();
+      const { title, body }: any = req.json();
       const updatedPost = { id, title, body };
       return res(ctx.status(200), ctx.json(updatedPost));
-    })
+    }
+  ),
+
+  rest.get("https://jsonplaceholder.typicode.com/posts", (req, res, ctx) => {
+    return res(ctx.status(500));
+  }),
 ];
