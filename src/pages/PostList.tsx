@@ -8,15 +8,19 @@ const PostList = () => {
   const [errors, setErrors] = useState<any>(null);
 
   const getFunc = async () => {
-    try {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
-      const json = await response.json();
-      setPosts(json);
-    } catch (error) {
-      setErrors("Error fetching posts")
-    }
+    // try {
+    //   const response = await fetch(
+    //     "https://jsonplaceholder.typicode.com/posts"
+    //   );
+    //   const json = await response.json();
+    //   setPosts(json);
+    // } catch (error) {
+    //   setErrors("Error fetching posts")
+    // }
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => response.json())
+      .then((json:any) => setPosts(json))
+      .catch((error:any)=>setErrors("Error fetching posts"))
   };
 
   useEffect(() => {

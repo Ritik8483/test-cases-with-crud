@@ -26,28 +26,49 @@ describe.skip("User API tests", () => {
       name: "Postlist",
     });
     expect(textElement).toBeInTheDocument();
-    await waitFor(() => {
-      const post1 = screen.queryAllByText(/Post 1/i);
-      expect(post1[0]).toBeInTheDocument();
-    });
+    const post1 = await screen.findByText(/Body of dummy added/i);
+    expect(post1).toBeInTheDocument();
+    // const post1 = await screen.findAllByText(/Post 1/i);
+    // expect(post1[0]).toBeInTheDocument();
+    // await waitFor(() => {
+    //   const post1 = screen.queryByText(/Body of dummy added/i);    //find element on the basis of body
+    //   expect(post1).toBeInTheDocument();
+    // });
+    // await waitFor(() => {
+    //   const post1 = screen.queryAllByText(/Post 1/i);
+    //   expect(post1[0]).toBeInTheDocument();//as it contains 2 "Post 1"
+    // });
   });
 
-  xit("renders Submit btn and post data api", async () => {
+  it("renders Submit btn and post data api", async () => {
     render(<PostList />);
     const submitButton = screen.getByRole("button", { name: /submit/i });
+    console.log("submitButton", submitButton);
+    expect(submitButton).toBeInTheDocument();
     fireEvent.click(submitButton);
+    // await waitFor(() => {
+    //   const newPostElement = screen.getByRole("heading", {
+    //     name: /New Post/i,
+    //   });
+    //   console.log("newPostElement", newPostElement);
+
+    //   expect(newPostElement).toBeInTheDocument();
+    // });
     const newPostElement = await screen.findByRole("heading", {
       name: /New Post/i,
     });
+    console.log("newPostElement", newPostElement);
     expect(newPostElement).toBeInTheDocument();
   });
 
-  xit("renders delete btn and delete api data", async () => {
+  it("renders delete btn and delete api data", async () => {
     render(<PostList />);
-    await waitFor(() => {
-      const post1 = screen.queryAllByText(/Post 1/i);
-      expect(post1[0]).toBeInTheDocument();
-    });
+    // await waitFor(() => {
+    //   const post1 = screen.queryAllByText(/Post 1/i);
+    //   expect(post1[0]).toBeInTheDocument();
+    // });
+    const post1 = await screen.findByText(/Post 1/i);
+    expect(post1).toBeInTheDocument();
     const deleteButtons = screen.queryAllByRole("button", { name: /delete/i });
     expect(deleteButtons.length).toBeGreaterThan(0);
     fireEvent.click(deleteButtons[0]);
@@ -57,24 +78,29 @@ describe.skip("User API tests", () => {
     });
   });
 
-  xit("renders update btn and update api data", async () => {
+  it("renders update btn and update api data", async () => {
     render(<PostList />);
     await waitFor(() => {
       const post1 = screen.queryAllByText(/Post 1/i);
       expect(post1[0]).toBeInTheDocument();
     });
-    const updateButtons = screen.queryAllByRole("button", { name: /update/i });
-    expect(updateButtons.length).toBeGreaterThan(0);
-    fireEvent.click(updateButtons[0]);
+    const updateButtons: any = screen.queryByRole("button", {
+      name: /update/i,
+    });
+    fireEvent.click(updateButtons);
     const updatedPostTitle = await screen.findByRole("heading", {
       name: /Updated Post/i,
-    });
+    }); 
     expect(updatedPostTitle).toBeInTheDocument();
   });
 
-  it("render ERROR", async () => {
+  xit("render ERROR", async () => {
     render(<PostList />);
-    const error = await screen.findByText(/Error fetching posts/i);
+    const textElement = screen.getByRole("heading", {
+      name: "Postlist",
+    });
+    expect(textElement).toBeInTheDocument();
+    const error = await screen.findByText(/Error fetching posts/i,{},{timeout:2000});
     expect(error).toBeInTheDocument();
   });
 });

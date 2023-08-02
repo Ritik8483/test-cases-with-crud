@@ -12,8 +12,9 @@ export const handlers = [
     return res(
       ctx.status(200),
       ctx.json([
-        { id: 1, title: "Post 1", body: "Body of Post 1" },
-        { id: 2, title: "Post 2", body: "Body of Post 2" },
+        { id: 1, title: "Post 1", body: "Body of dummy added" }, //queryByText  //findByTex
+        // { id: 1, title: "Post 1", body: "Body of Post 1" }, //queryAllByText or finAllByText as title and body both contains "Post 1"
+        // { id: 2, title: "Post 2", body: "Body of Post 2" },
       ])
     );
   }),
@@ -28,7 +29,6 @@ export const handlers = [
   rest.delete(
     "https://jsonplaceholder.typicode.com/posts/:id",
     (req, res, ctx) => {
-      const { id } = req.params;
       return res(ctx.status(200), ctx.json({}));
     }
   ),
@@ -44,6 +44,6 @@ export const handlers = [
   ),
 
   rest.get("https://jsonplaceholder.typicode.com/posts", (req, res, ctx) => {
-    return res(ctx.status(500));
+    return res(ctx.status(500), ctx.json({error:"Error fetching posts"}));
   }),
 ];
